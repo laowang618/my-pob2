@@ -9,8 +9,13 @@ To address this issue, I have added a **slider control** to POB, allowing player
 - Helps players achieve an "optimal path" at every step, especially when resources are limited in the early game
 ## Usage Guide
 1. Open the main POB interface and click the **"New Path build"** button
-2. On the talent page, check the **"Show Node Power:"** checkbox
+![Click New Path Build](./screenshots/1.png)
+2. On the talent page, check the **"Show Node Power:"** 
+![Check Show Node Power](./screenshots/2.png)
 3. The slider control will appear, allowing you to plan your allocation order accordingly
+![Slider Control Demo](./screenshots/3.gif)
+
+
 ## Source Reference
 This project is an extension based on the following repository:  
 [https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2.git](https://github.com/PathOfBuildingCommunity/PathOfBuilding-PoE2.git)
