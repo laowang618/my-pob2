@@ -53,6 +53,7 @@ function main:Init()
 	self.modes = { }
 	self.modes["LIST"] = LoadModule("Modules/BuildList")
 	self.modes["BUILD"] = LoadModule("Modules/Build")
+	self.modes["NEWBUILD"] = LoadModule("Modules/NewBuild")
 
 	self.popups = { }
 	self.sharedItemList = { }
@@ -115,7 +116,7 @@ function main:Init()
 	self.showAnimations = true
 	self.showAllItemAffixes = true
 	self.errorReadingSettings = false
-	
+
 	if not SetDPIScaleOverridePercent then SetDPIScaleOverridePercent = function(scale) end end
 
 	if launch.devMode and IsKeyDown("CTRL") or os.getenv("REGENERATE_MOD_CACHE") == "1" then
@@ -467,7 +468,7 @@ function main:OnFrame()
 	SetDrawColor(0, 0, 0)
 	DrawImage(nil, par + 500, 200, 2, 750)
 	DrawImage(nil, 500, par + 200, 759, 2)]]
-	
+
 	if self.inputEvents and not itemLib.wiki.triggered then
 		for _, event in ipairs(self.inputEvents) do
 			if event.type == "KeyUp" and event.key == "F1" then
@@ -966,7 +967,7 @@ function main:OpenOptionsPopup()
 		"The default value is " .. tostring(defaultColorCodes.NEGATIVE:gsub('^(^)', '0')) .. ".\nIf updating while inside a build, please re-load the build after saving."
 
 	nextRow()
-  
+
 	controls.colorHighlight = new("EditControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 100, 18 }, tostring(self.colorHighlight:gsub('^(^)', '0')), nil, nil, 8, function(buf)
 		local match = string.match(buf, "0x%x+")
 		if match and #match == 8 then
@@ -987,7 +988,7 @@ function main:OpenOptionsPopup()
 	controls.edgeSearchHighlight = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20}, "^7Show search circles at viewport edge", function(state)
 		self.edgeSearchHighlight = state
 	end)
-	
+
 	--nextRow()
 	--controls.showPublicBuilds = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20 }, "^7Show Latest/Trending builds:", function(state)
 		--self.showPublicBuilds = state
@@ -1003,7 +1004,7 @@ function main:OpenOptionsPopup()
 	controls.showAnimations = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20 }, "^7Show Animations:", function(state)
 		self.showAnimations = state
 	end)
-	
+
 	nextRow()
 	controls.showAllItemAffixes = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20 }, "^7Show all item affixes sliders:", function(state)
 		self.showAllItemAffixes = state
@@ -1077,21 +1078,21 @@ function main:OpenOptionsPopup()
 		self.slotOnlyTooltips = state
 	end)
 	controls.slotOnlyTooltips.state = self.slotOnlyTooltips
-	
+
 	nextRow()
 	controls.notSupportedModTooltips = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20 }, "^7Show tooltip for unsupported mods :", function(state)
 		self.notSupportedModTooltips = state
 	end)
 	controls.notSupportedModTooltips.tooltipText = "Show ^8(Not supported in PoB yet) ^7next to unsupported mods\nRequires PoB to restart for it to take effect"
 	controls.notSupportedModTooltips.state = self.notSupportedModTooltips
-	
+
 	nextRow()
 	controls.invertSliderScrollDirection = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20 }, "^7Invert slider scroll direction:", function(state)
 		self.invertSliderScrollDirection = state
 	end)
 	controls.invertSliderScrollDirection.tooltipText = "Default scroll direction is:\nScroll Up = Move right\nScroll Down = Move left"
 	controls.invertSliderScrollDirection.state = self.invertSliderScrollDirection
-	
+
 	if launch.devMode then
 		nextRow()
 		controls.disableDevAutoSave = new("CheckBoxControl", { "TOPLEFT", nil, "TOPLEFT" }, { defaultLabelPlacementX, currentY, 20 }, "^7Disable Dev AutoSave:", function(state)
@@ -1570,7 +1571,7 @@ function main:OpenConfirmPopup(title, msg, confirmLabel, onConfirm, extraLabel, 
 		numMsgLines = numMsgLines + 1
 	end
 	local confirmWidth = m_max(80, DrawStringWidth(16, "VAR", confirmLabel) + 10)
-	
+
 	if extraLabel and onExtra then
 		-- Three button layout: Continue (left), Connect Path (center), Cancel (right)
 		local extraWidth = m_max(80, DrawStringWidth(16, "VAR", extraLabel) + 10)
